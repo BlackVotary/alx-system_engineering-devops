@@ -1,2 +1,2 @@
 #!/bin/bash
-if id -u | grep "error" >/dev/null 2>&1;
+echo $(( id -u ))
