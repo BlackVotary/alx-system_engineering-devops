@@ -1,2 +1,2 @@
 #!/bin/bash
-echo "$(readlink -f /proc/self/cwd)"
+bash -c 'CWD=`readlink -f /proc/self/cwd`; echo $CWD'
