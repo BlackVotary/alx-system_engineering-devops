@@ -1,3 +1,4 @@
 #!/bin/bash
 echo "$(readlink -f /proc/self/cwd)"
-# End of script
+#! /bin/bash
+echo "End of script"
