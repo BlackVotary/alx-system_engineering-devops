@@ -1,5 +1,2 @@
 #!/bin/bash
-if [ -f "/tmp/my_first_directory/betty" ]; then
-echo "The file 'betty' exists!"
-fi
-rm "/tmp/my_first_directory/betty"
+mv /tmp/betty /tmp/my_first_directory
