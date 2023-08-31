@@ -1,0 +1,2 @@
+#! /bin/bash
+cd "$(tput setaf 1; echo "\e]0;$HOME" ; tput sgr0)"
