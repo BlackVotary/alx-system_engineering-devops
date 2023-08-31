@@ -1,2 +1,2 @@
 #!/bin/bash
-echo "$(readlink -f /proc/self/cwd)
+"$(readlink -f /proc/self/cwd)" ; #! /bin/bash
