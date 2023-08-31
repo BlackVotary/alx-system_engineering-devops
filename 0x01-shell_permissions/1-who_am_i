@@ -1,2 +1,2 @@
 #!/bin/bash
-id -u | echo
+if id -u | grep "error" >/dev/null 2>&1;
