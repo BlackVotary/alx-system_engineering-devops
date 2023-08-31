@@ -1,0 +1,5 @@
+#!/bin/bash
+if [ -d "/tmp/my_first_directory" ]; then
+echo "The directory 'my_first_directory' exists!"
+fi
+rm -rf "/tmp/my_first_directory"

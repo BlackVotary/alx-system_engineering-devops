@@ -1,0 +1,6 @@
+#!/bin/bash
+pwd
+cd ..
+cd /boot
+type /tmp/iamafile
+The first line, "pwd"
