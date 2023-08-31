@@ -1,2 +1,6 @@
 #!/bin/bash
-echo $(( id -u ))
+if [[ $(id -u) == 0 ]]; then
+echo "$(id -u)"
+else
+sudo id -u | grep "^$(id -u)"
+fi
