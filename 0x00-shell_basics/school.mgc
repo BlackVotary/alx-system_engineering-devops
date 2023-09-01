@@ -1,2 +1,2 @@
 #!/bin/bash 
-cat SCHOOL\0 > school.mgc
+SCHOOL\0 > school.mgc
