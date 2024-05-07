@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# Bash script to transfer files from a client to remote server
+# Usaage ./0-transfer_file PATH_TO_FILE IP USERNAME PATH_TO_SSH_KEY
+# strict host key checking is disabled
+
+if [ "$#" -ne 4 ]; then
+    echo "Usage: ./0-transfer_file PATH_TO_FILE IP USERNAME PATH_TO_SSH_KEY"
+    exit 1
+fi
+
+PATH_TO_FILE=$1
+IP=$2
+USERNAME=$3
+PATH_TO_SSH_KEY=$4
+
+if [ ! -f "$PATH_TO_FILE" ]; then
+    echo "File not found"
+    exit 1
+fi
+
+scp -o StrictHostKeyChecking=no -i "$PATH_TO_SSH_KEY" "$PATH_TO_FILE" "$USERNAME@$IP":~/
