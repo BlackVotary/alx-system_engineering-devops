@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# installs load balancer
+
+function install() {
+    # check if package exists and install it
+    if dpkg -s "$1" &>/dev/null; then
+        echo -e "$1 is already installed"
+    else
+        echo -e "Installing $1\n"
+        sudo apt-get update -y -qq && \
+        sudo apt-get install -y "$1" -qq
+        echo -e "\n"
+    fi
+
+    if dpkg -s "$1" &>/dev/null; then
+        echo -e "$1 has been installed\n"
+    else
+        echo -e "Failed to install $1\n"
+    fi
+}
+
+install haproxy
+
+# Configure HAproxy
+config_server="
+frontend muizzyranking-tech-frontend
+        bind *:80
+        mode http
+        default_backend muizzyranking-tech-backend
+
+backend muizzyranking-tech-backend
+        balance roundrobin
+        server 519608-web-01 35.153.192.177:80 check
+        server 519608-web-02 54.90.21.58:80 check"
+echo "$config_server" | sudo tee -a /etc/haproxy/haproxy.cfg
+
+# enable haproxy to be started by init script
+echo "ENABLED=1" | sudo tee -a /etc/default/haproxy
+
+# Restart HAproxy to apply the configuration
+sudo service haproxy restart

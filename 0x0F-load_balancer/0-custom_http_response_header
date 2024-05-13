@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+# set up Nginx server with custom response header
+
+MESSAGE="Hello World!"
+ERROR_MSG="Ceci n'est pas une page"
+DEFAULT_FILE="/etc/nginx/sites-available/default"
+REDIRECT="\n\tlocation /redirect_me {\n\t\treturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n\t}\n"
+ERRORREDIRECT="\n\terror_page 404 /404.html;\n\tlocation = /404.html {\n\t\tinternal;\n\t}\n"
+CUSTOMHEADER="\n\tadd_header X-Served-By \$hostname;\n"
+
+function install() {
+    # check if package exists and install it
+    if dpkg -s "$1" &>/dev/null; then
+        echo -e "$1 is already installed"
+    else
+        echo -e "Installing $1\n"
+        sudo apt-get update -y -qq && \
+        sudo apt-get install -y "$1" -qq
+        echo -e "\n"
+    fi
+
+    if dpkg -s "$1" &>/dev/null; then
+        echo -e "$1 has been installed\n"
+    else
+        echo -e "Failed to install $1\n"
+    fi
+}
+
+install nginx
+
+# allow Nginx through firewall
+sudo ufw allow 'Nginx HTTP'
+
+if [ -d "/var/www" ]; then
+    sudo chown -R "$USER":"$USER" /var/www
+    sudo chmod -R 755 /var/www
+else
+    sudo mkdir -p /var/www
+    sudo chown -R "$USER":"$USER" /var/www
+    sudo chmod -R 755 /var/www
+fi
+# set a message to be displayed when IP is visited
+echo "$MESSAGE" > /var/www/html/index.nginx-debian.html
+
+# set a custom error page
+echo "$ERROR_MSG" > /var/www/html/404.html
+
+# set a redirect page
+sudo sed -i "46i\ $REDIRECT" "$DEFAULT_FILE"
+
+#s set the error page
+sudo sed -i "46i\ $ERRORREDIRECT" "$DEFAULT_FILE"
+
+sudo sed -i "46i\ $CUSTOMHEADER" "$DEFAULT_FILE"
+
+sudo service nginx restart
