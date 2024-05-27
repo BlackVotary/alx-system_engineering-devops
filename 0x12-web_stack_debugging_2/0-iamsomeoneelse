@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# This script accepts one argument (a username) and runs the 'whoami' command as that user
+
+# Get the username argument
+username="$1"
+
+# Try to run whoami as the specified user using sudo
+sudo -u "$username" whoami
