@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# displays information about server subdomains
+# Function to display information about a subdomain
+display_subdomain_info() {
+    subdomain=$1
+    domain=$2
+    dig_output=$(dig "$subdomain"."$domain" +short)
+    record_type=$(dig "$subdomain"."$domain" | awk '/ANSWER SECTION:/ {getline; print $4}')
+    echo "The subdomain $subdomain is a $record_type record and points to $dig_output"
+}
+
+# Check if both domain and subdomain parameters are provided
+if [ $# -eq 2 ]; then
+display_subdomain_info "$2" "$1"
+# Check if only domain parameter is provided
+elif [ $# -eq 1 ]; then
+    domain=$1
+    # Display information about default subdomains
+    for subdomain in www lb-01 web-01 web-02; do
+        display_subdomain_info "$subdomain" "$domain"
+    done
+else
+    echo "Usage: $0 <domain> [subdomain]"
+fi
